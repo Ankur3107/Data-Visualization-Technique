@@ -27,3 +27,20 @@ getMissingUpdatedDataFrame <- function(df){
     miceModComplete <- complete(miceMod)
     miceModComplete
 }
+
+#Function 5:
+trim <- function (x){
+    x <- gsub("^\\s+|\\s+$", "", x)
+    x <- as.character(x)
+} 
+
+#Function 6:
+getOneHotEncodeConvertedDF <- function(df){
+    charDF <- select_if(df,is.character)
+    numDF <- select_if(df,is.numeric)
+    
+    dmy <- dummyVars(~., data = charDF)
+    trsf <- data.frame(predict(dmy, newdata = charDF))
+    
+    cbind(trsf,numDF)
+}
