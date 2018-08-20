@@ -1,3 +1,8 @@
+library(dplyr)
+library(stringr)
+library(mice)
+
+
 #Function 1: 
 getNumeric <- function(feature){
                 feature <- gsub("\\,", "", feature)
