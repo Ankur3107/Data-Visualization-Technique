@@ -14,3 +14,16 @@ changeFeaturesIntoNumeric <- function(df, features){
     df
 }
 
+#Function 3:
+getCleanChar <- function(feature){
+    feature <- ifelse(feature=="N/A", NA, feature)
+    feature <- ifelse(feature=="No Data", NA, feature)
+    feature
+}
+
+#Function 4:
+getMissingUpdatedDataFrame <- function(df){
+    miceMod <- mice(df, method="rf")
+    miceModComplete <- complete(miceMod)
+    miceModComplete
+}
