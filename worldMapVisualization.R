@@ -2,15 +2,34 @@ library(dplyr)
 library(highcharter)
 library(countrycode)
 
-worldMapVisualization <- function(df, x, title=NULL){
+worldMapVisualization <- function(df, x, y = NULL, title = NULL){
  
     Country <- enquo(x)
-
+    
     #Load worldgeojson for word map plot
     data(worldgeojson, package = "highcharter")
-
-    #Group By Country
-    by_country <- df %>% select(!!Country) %>% filter(!is.na(!!Country)) %>%group_by(!!Country) %>% summarise(n1=n())
+    
+    by_country <- df  
+    
+    if(!missing(y)){
+        
+        Var <- enquo(y)
+        by_country <- by_country %>% 
+                      select(!!Country, !!Var) %>% 
+                      filter(!is.na(!!Country)) %>% 
+                      filter(!is.na(!!Var)) %>% 
+                      group_by(!!Country) %>% 
+                      summarise(n1=sum(!!Var))
+    }
+    else{
+        
+        by_country <- by_country %>% 
+                      select(!!Country) %>% 
+                      filter(!is.na(!!Country)) %>%
+                      group_by(!!Country) %>% 
+                      summarise(n1=n())
+    }
+    
     code <- countrycode(by_country$Country, 'country.name', 'iso3c')
     by_country$iso3 <- code
     
